@@ -1,5 +1,17 @@
-document.addEventListener('DOMContentLoaded', init);
+const leftArrow = document.querySelector('.fa-arrow-circle-left');
+const rightArrow = document.querySelector('.fa-arrow-circle-right');
+const pause = document.querySelector('.fa-pause-circle');
+const play = document.querySelector('#play');
+const indicatorsNav = document.querySelector('.slideshow__nav');
+
+let delay = 3000;
 let items = [];
+let counter = 1;
+let timmy;
+
+
+document.addEventListener('DOMContentLoaded', init);
+
 
 function init() {
     let divC = document.createElement('div');
@@ -31,14 +43,91 @@ function loadContent(data) {
     })
     let contentDiv = document.querySelector('.slideshow__slide');
     contentDiv.appendChild(dfImages);
+
+    //Clone first and last child of contentDiv and insert them at opposite ends.
+
+    let firstClone = contentDiv.firstChild.cloneNode(true);
+    let lastClone = contentDiv.lastChild.cloneNode(true);
+    firstClone.id = "firstClone";
+    lastClone.id = "lastClone";
+
+    contentDiv.prepend(lastClone);
+    contentDiv.append(firstClone);
+    //Insert nav indicators
     let slideShowNav = document.querySelector('.slideshow__nav');
     slideShowNav.appendChild(dfIndicators);
-    document.querySelector('.slideshow__item-image').classList.add('current');
-    document.querySelector('.slideshow__indicator').classList.add('current-indicator');
-    items = document.querySelectorAll('.slideshow__item');
-    // start();
 
+    //Add current class to the first image on the list
+    document.querySelector('.slideshow__item-image').classList.add('current');
+    //add current class to the first indicator
+    document.querySelector('.slideshow__indicator').classList.add('current-indicator');
+
+    //store the array of images in the empty array item
+    items = document.querySelectorAll('.slideshow__item-image');
+
+    //Wait for images to load before measuring width, otherwise you get incorrect results, since I'm generating them with JS.Then set the first image, not the clone as the first image displayed on screen.
+    let itemsArr = Array.from(items);
+    itemsArr[0].addEventListener("load", () => {
+        size = items[0].clientWidth;
+        console.log(size, itemsArr)
+        contentDiv.style.transform = `translateX(-${size * counter}px)`;
+        //Set eventlistners on buttons
+        leftArrow.addEventListener('click', () => {
+            if (counter <= 0) return;
+            counter--;
+            contentDiv.style.transition = 'all 250ms ease-in';
+            contentDiv.style.transform = `translateX(-${size * counter}px)`;
+        })
+
+        rightArrow.addEventListener('click', () => {
+            if (counter >= items.length - 1) return;
+            counter++;
+            contentDiv.style.transition = 'all 250ms ease-in';
+            contentDiv.style.transform = `translateX(-${size * counter}px)`;
+        })
+
+        contentDiv.addEventListener('transitionend', () => {
+            if (items[counter].id === 'lastClone') {
+                contentDiv.style.transition = 'none';
+                counter = items.length - 2;
+                contentDiv.style.transform = `translateX(-${size * counter}px)`;
+            }
+            if (items[counter].id === 'firstClone') {
+                contentDiv.style.transition = 'none';
+                counter = 1;
+                contentDiv.style.transform = `translateX(-${size * counter}px)`;
+            }
+        })
+
+        start(contentDiv);
+        pause.addEventListener('click', () => {
+            clearInterval(timmy);
+            pause.style.display = "none";
+            play.style.display = "block";
+            indicatorsNav.style.display = "flex";
+
+        })
+        play.addEventListener('click', () => {
+            let contentDiv = document.querySelector('.slideshow__slide');
+            start(contentDiv);
+            play.style.display = "none"
+            pause.style.display = "block"
+            indicatorsNav.style.display = "none";
+        })
+        indicatorsNav.addEventListener('click', (ev) => {
+            if (!ev.target.closest('button')) return;
+            indicatorsNav.querySelector('.current-indicator').classList.remove('current-indicator');
+            ev.target.classList.add('current-indicator');
+            let idx = ev.target.closest('button').getAttribute('data-index');
+            console.log(idx)
+            let contentDiv = document.querySelector('.slideshow__slide');
+            contentDiv.style.transition = 'all 250ms ease-in';
+            contentDiv.style.transform = `translateX(-${size * (+idx + 1)}px)`;
+        })
+    })
 }
+
+
 
 function prepareImage(item, index) {
     let img = document.createElement('img');
@@ -55,20 +144,14 @@ function createIndicators(index) {
     return button;
 }
 
-// function start() {
-//     setInterval(() => {
-//         let [first, ...rest] = items;
-//         items = [...rest, first];
-//         switchItem(0)
-//     }, 3000)
-// }
+function start(slide) {
+    timmy = setInterval(() => {
+        counter++;
+        slide.style.transition = 'all 250ms ease-in';
+        slide.style.transform = `translateX(-${size * counter}px)`;
+    }, delay)
+}
 
-// function switchItem(index) {
-//     let current = document.querySelector('.current');
-//     current.classList.remove('current');
-//     current.classList.add('leaving');
-//     setInterval(() => {
-//         current.classList.remove('leaving');
-//     }, 800)
-//     items[index].classList.add('current');
-// }
+
+
+
