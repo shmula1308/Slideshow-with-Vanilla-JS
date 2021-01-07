@@ -8,6 +8,7 @@ let indicatorsNav;
 let items = [];
 let counter = 1;
 let timmy;
+let delay = 3000;
 
 window.onresize = () => {
     location.reload();
@@ -113,7 +114,7 @@ function start(divC) {
         divC.style.transition = 'all 250ms ease-in';
         divC.style.transform = `translateX(-${size * counter}px)`;
         updateCurrentDot(counter);
-    }, 3000)
+    }, delay)
 }
 
 
