@@ -9,6 +9,10 @@ let items = [];
 let counter = 1;
 let timmy;
 
+window.onresize = () => {
+    location.reload();
+}
+
 
 function init() {
     let divC = document.createElement('div');
@@ -121,7 +125,7 @@ function setupFirstImage(content, imagesArr) {
 }
 
 function updateCurrentDot(counter) {
-    if (counter === 5) counter = 1;
+    if (counter === items.length - 1) counter = 1;
     if (counter === 0) counter = items.length - 2;
     indicatorsNav.querySelector('.current-indicator').classList.remove('current-indicator');
     indicatorsNav.children[counter - 1].classList.add('current-indicator')
