@@ -9,4 +9,4 @@ All we have to do is add the images (which have the same width and height) insid
 
 We can change the delay of the slideshow by changing the value of the variable `let delay = 3000;` in the Javascript file.
 
-GitHub pages link: https://shmula1308.github.io/Slideshow-with-HTML-CSS-and-Vanilla-Javascript/
+
