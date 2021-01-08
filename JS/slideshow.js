@@ -131,6 +131,8 @@ function moveSlidesWithDots(ev) {
 }
 
 function slideBack() {
+    //if we press arrows quickly we get an error because counter get smaller or equal to zero, which coresponds to no element in the array
+    // This if stament makes sure we return if counter gets smaller or equal to zero
     if (counter <= 0) return;
     counter--;
 
@@ -141,6 +143,7 @@ function slideBack() {
 }
 
 function slideForward() {
+    // We do same thing here to preven counter getting bigger than the length of the array of images
     if (counter >= items.length - 1) return;
     counter++;
 
