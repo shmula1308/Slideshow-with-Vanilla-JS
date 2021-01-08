@@ -1,24 +1,16 @@
 {
     "items": [
         {
-            "title": "Some title",
-            "img": "img_1.jpg",
-            "msg": "Some text to be displayed as a test"
+            "img": "img_1.jpg"
         },
         {
-            "title": "Some title",
-            "img": "img_2.jpg",
-            "msg": "Some text to be displayed as a test"
+            "img": "img_2.jpg"
         },
         {
-            "title": "Some title",
-            "img": "img_3.jpg",
-            "msg": "Some text to be displayed as a test"
+            "img": "img_3.jpg"
         },
         {
-            "title": "Some title",
-            "img": "img_4.jpg",
-            "msg": "Some text to be displayed as a test"
+            "img": "img_4.jpg"
         }
     ]
 }
